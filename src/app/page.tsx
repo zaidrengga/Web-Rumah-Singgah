@@ -2,16 +2,15 @@
 
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
-import { orderSteps, products } from "@/data/products";
+import { orderSteps } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useFadeAnimations } from "@/lib/animation";
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
-import ContactForm from "@/components/ContactForm";
+import { useProducts } from "@/hooks/use-product";
 
 export default function HomePage() {
+  const { products } = useProducts();
 
-  useFadeAnimations();
   return (
     <div className="min-h-screen">
       <div className="absolute top-20 left-0 w-1/2 h-96 rounded-full blur-3xl opacity-10 bg-amber-600"></div>
@@ -53,7 +52,7 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 stagger-grid">
             {products.slice(0, 4).map((product) => (
-              <ProductCard className="fade-item" key={product.id} product={product} onAdd={() => { }} />
+              <ProductCard className="fade-item" key={product.id} product={product} />
             ))}
           </div>
           <Button asChild className="flex items-center mx-auto mt-12 fade-up w-fit">
@@ -121,40 +120,6 @@ export default function HomePage() {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* contact section */}
-      <section className="py-16 px-4 sm:px-6 relative">
-        <div className="absolute top-0 left-0 w-1/2 h-full bg-amber-600 rounded-full blur-3xl opacity-20 z-[-1]"></div>
-
-        <div className="mx-auto max-w-6xl rounded-2xl backdrop-blur-2xl bg-black/10 dark:bg-white/10 p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="flex flex-col gap-4">
-            <h2 className="text-3xl font-bold fade-up">
-              Let&#39;s <span className="text-amber-600">Connect</span>
-            </h2>
-            <p className="fade-up">
-              We&#39;d love to hear from you! Whether you have a question, feedback, or just want to
-              say hello, we&#39;re here to listen.
-            </p>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 fade-up">
-                <MapPin className="w-4 h-4" />
-                <p >Jl. Raya Kebon Jeruk, Jakarta Timur</p>
-              </div>
-              <div className="flex items-center gap-2 fade-up">
-                <Phone className="w-4 h-4" />
-                <p >+62 123-456-7890</p>
-              </div>
-              <div className="flex items-center gap-2 fade-up">
-                <Mail className="w-4 h-4" />
-                <p >T9e0I@example.com</p>
-              </div>
-            </div>
-          </div>
-          <div className="fade-up">
-            <ContactForm />
           </div>
         </div>
       </section>

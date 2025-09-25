@@ -5,24 +5,29 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ProductType, categorys } from "@/data/products";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Category, Product } from "@prisma/client";
+import { useProducts } from "@/hooks/use-product";
 
 export default function AddProductPage() {
     const router = useRouter();
-    const [newProduct, setNewProduct] = useState<ProductType>({
+    const { addProduct } = useProducts();
+
+    const [newProduct, setNewProduct] = useState<Product>({
+        id: "",
         name: "",
         description: "",
         price: 0,
         image: "",
-        category: "all" as const,
-        id: Date.now(), // generate a unique ID based on timestamp
+        category: "coffee",
+        createdAt: new Date(),
+        updatedAt: new Date(),
     });
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
         if (!newProduct.name || newProduct.price <= 0) return;
         // Simpan ke database atau global state (sementara kita redirect saja)
-        console.log("New product:", newProduct);
+        await addProduct(newProduct);
 
         router.push("/products"); // balik ke daftar produk
     };
@@ -51,12 +56,12 @@ export default function AddProductPage() {
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            {categorys.map((category) => (
+                            {Object.values(Category).map((category) => (
                                 <SelectItem
                                     key={category}
                                     value={category}
                                     onClick={() =>
-                                        setNewProduct({ ...newProduct, category: category as ProductType["category"] })
+                                        setNewProduct({ ...newProduct, category: category as Product["category"] })
                                     }
                                 >
                                     {category}

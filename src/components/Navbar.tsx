@@ -6,17 +6,13 @@ import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
 import { AlignLeft, X } from "lucide-react";
 import gsap from "gsap";
-
-const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/menu", label: "Menu" },
-  { href: "/order", label: "Order" },
-  { href: "/dashboard", label: "Dashboard" },
-];
+import { useCart } from "@/hooks/CartContext";
 
 export default function Navbar() {
+  const { totalItems } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+
 
   const menuRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
@@ -72,21 +68,42 @@ export default function Navbar() {
         <div className="flex items-center gap-6">
           {/* desktop menu */}
           <ul className="hidden sm:flex items-center gap-2">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <Button
-                  asChild
-                  variant={pathname === item.href ? "default" : "ghost"}
-                  size="sm"
-                >
-                  <Link href={item.href}>{item.label}</Link>
-                </Button>
-              </li>
-            ))}
+            <li>
+              <Button
+                asChild
+                variant={pathname === "/" ? "default" : "ghost"}
+              >
+                <Link href="/">Home</Link>
+              </Button>
+            </li>
+            <li>
+              <Button
+                asChild
+                variant={pathname === "/menu" ? "default" : "ghost"}
+              >
+                <Link href="/menu">Menu</Link>
+              </Button>
+            </li>
+            <li>
+              <Button
+                asChild
+                variant={pathname === "/order" ? "default" : "ghost"}
+              >
+                <Link href="/order">Order ({totalItems})</Link>
+              </Button>
+            </li>
+            <li>
+              <Button
+                asChild
+                variant={pathname === "/dashboard" ? "default" : "ghost"}
+              >
+                <Link href="/dashboard">Dashboard</Link>
+              </Button>
+            </li>
           </ul>
 
           <DarkModeToggle />
-          
+
           {/* mobile menu */}
           <div className="sm:hidden flex items-center">
             <Button
@@ -109,17 +126,42 @@ export default function Navbar() {
                 ref={listRef}
                 className="flex flex-col items-center gap-4 mt-10"
               >
-                {navItems.map((item) => (
-                  <li key={item.href}>
-                    <Button
-                      asChild
-                      variant={pathname === item.href ? "default" : "ghost"}
-                      size="lg"
-                    >
-                      <Link href={item.href} onClick={() => setIsOpen(false)}>{item.label}</Link>
-                    </Button>
-                  </li>
-                ))}
+                <li>
+                  <Button
+                    asChild
+                    variant={pathname === "/" ? "default" : "ghost"}
+  
+                  >
+                    <Link href="/">Home</Link>
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    asChild
+                    variant={pathname === "/menu" ? "default" : "ghost"}
+  
+                  >
+                    <Link href="/menu">Menu</Link>
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    asChild
+                    variant={pathname === "/order" ? "default" : "ghost"}
+  
+                  >
+                    <Link href="/order">Order</Link>
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    asChild
+                    variant={pathname === "/dashboard" ? "default" : "ghost"}
+  
+                  >
+                    <Link href="/dashboard">Dashboard</Link>
+                  </Button>
+                </li>
               </ul>
             </div>
           </div>

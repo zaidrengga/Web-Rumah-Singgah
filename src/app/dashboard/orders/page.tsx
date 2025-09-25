@@ -2,15 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatIDR, type OrdersType } from "@/data/products";
+import { formatIDR } from "@/lib/utils";
+import { useOrders } from "@/hooks/use-order";
+import { useProducts } from "@/hooks/use-product";
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<OrdersType[]>([]);
-
-  useEffect(() => {
-    const storedOrders = JSON.parse(localStorage.getItem("orders") || "[]");
-    setOrders(storedOrders);
-  }, []);
+  const { orders } = useOrders();
+  const { products } = useProducts();
 
   return (
     <Card>
@@ -31,7 +29,7 @@ export default function OrdersPage() {
                 <ul className="ml-4 mt-1 space-y-1 text-sm">
                   {order.items.map((item, i) => (
                     <li key={i}>
-                      {item.product.name} × {item.qty}
+                      {products.find((p) => p.id === item.productId)?.name} × {item.qty}
                     </li>
                   ))}
                 </ul>

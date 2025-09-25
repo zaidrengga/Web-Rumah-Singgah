@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
+import { CartProvider } from "@/hooks/CartContext";
 
 export const metadata: Metadata = {
   title: "Rumah Singgah Caffe",
@@ -17,10 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body >
-        <PageTransition />
-        <Navbar />
-        <main className="pt-20 min-h-screen">{children}</main>
-        <Footer />
+        <CartProvider>
+          <PageTransition />
+          <Navbar />
+          <main className="pt-20 min-h-screen">{children}</main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );
